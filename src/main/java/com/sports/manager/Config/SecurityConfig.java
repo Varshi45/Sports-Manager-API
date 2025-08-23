@@ -26,14 +26,14 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/matches/**", "/api/sports/**").hasRole("ADMIN")
+                        .requestMatchers("/api/matches/", "/api/sports/**","/api/matches/**").hasRole("ADMIN")
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(adminAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .cors(cors -> cors.configurationSource(request -> {
                     org.springframework.web.cors.CorsConfiguration corsConfig = new org.springframework.web.cors.CorsConfiguration();
                     corsConfig.setAllowedOrigins(List.of("http://localhost:3000"));
-                    corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                    corsConfig.setAllowedMethods(List.of( "POST", "PUT", "DELETE", "OPTIONS"));
                     corsConfig.setAllowCredentials(true);
                     corsConfig.setAllowedHeaders(List.of("Authorization", "Content-Type"));
                     return corsConfig;

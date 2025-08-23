@@ -8,6 +8,7 @@ import com.sports.manager.Repository.MatchRepository;
 import com.sports.manager.Repository.SportRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,8 +22,20 @@ public class MatchService {
     private final MatchRepository matchRepository;
     private final SportRepository sportRepository;
 
-    public List<Match> getAllMatches(){
-        return matchRepository.findAll();
+    public List<MatchRequestDto> getAllMatches(){
+        List<Match> matches = matchRepository.findAll();
+        List<MatchRequestDto> matchDtos = new ArrayList<>();
+        for (Match match : matches) {
+            MatchRequestDto matchDto = new MatchRequestDto();
+            matchDto.setTeam1(match.getTeam1());
+            matchDto.setTeam2(match.getTeam2());
+            matchDto.setDate(match.getDate());
+            matchDto.setLocation(match.getLocation());
+            matchDto.setSportId(match.getSport().getId());
+            matchDtos.add(matchDto);
+        }
+
+        return matchDtos;
     }
 
     public Match createMatch(MatchRequestDto dto, Admin admin) {
@@ -47,12 +60,37 @@ public class MatchService {
         return matchRepository.save(newMatch);
     }
 
-    public List<Match> getAllMatchesByAdmin(int adminId) {
-        return matchRepository.findByAdmin_Id(adminId);
+    public List<MatchRequestDto> getAllMatchesByAdmin(int adminId) {
+        List<Match> matches = matchRepository.findAll();
+        List<MatchRequestDto> matchDtos = new ArrayList<>();
+        for (Match match : matches) {
+            MatchRequestDto matchDto = new MatchRequestDto();
+            matchDto.setTeam1(match.getTeam1());
+            matchDto.setTeam2(match.getTeam2());
+            matchDto.setDate(match.getDate());
+            matchDto.setLocation(match.getLocation());
+            matchDto.setSportId(match.getSport().getId());
+            matchDtos.add(matchDto);
+        }
+
+        return matchDtos;
     }
 
-    public List<Match> getAllMatchesBySport(int sportId) {
-        return matchRepository.findBySport_Id(sportId);
+    public List<MatchRequestDto> getAllMatchesBySport(int sportId) {
+        List<Match> matches = matchRepository.findAll();
+        List<MatchRequestDto> matchDtos = new ArrayList<>();
+        for (Match match : matches) {
+            MatchRequestDto matchDto = new MatchRequestDto();
+            matchDto.setTeam1(match.getTeam1());
+            matchDto.setTeam2(match.getTeam2());
+            matchDto.setDate(match.getDate());
+            matchDto.setLocation(match.getLocation());
+            matchDto.setSportId(match.getSport().getId());
+            matchDtos.add(matchDto);
+        }
+
+        return matchDtos;
+
     }
 
     public void deleteMatch(int matchId, Admin admin) {
