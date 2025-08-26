@@ -23,7 +23,7 @@ public class MatchController {
 
 
     @GetMapping("/")
-    public List<Match> getAllMatches(){
+    public List<MatchRequestDto> getAllMatches(){
         return matchService.getAllMatches();
     }
 
@@ -42,7 +42,7 @@ public class MatchController {
     }
 
     @GetMapping("/admin")
-    public List<Match> getAllMatchesByAdmin(HttpServletRequest request){
+    public List<MatchRequestDto> getAllMatchesByAdmin(HttpServletRequest request){
         Admin admin = (Admin) request.getAttribute("user");
 
         int adminId = admin.getId();
@@ -51,7 +51,7 @@ public class MatchController {
     }
 
     @GetMapping("/sport/{sportId}")
-    public List<Match> getAllMatchesBySport(@PathVariable int sportId){
+    public List<MatchRequestDto> getAllMatchesBySport(@PathVariable int sportId){
         return matchService.getAllMatchesBySport(sportId);
     }
 

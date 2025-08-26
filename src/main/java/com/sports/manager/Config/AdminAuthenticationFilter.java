@@ -39,13 +39,15 @@ public class AdminAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String path = request.getServletPath();
+        String method = request.getMethod();
 
-        if (path.startsWith("/api/auth")) {
+        if (path.startsWith("/api/auth") || "OPTIONS".equalsIgnoreCase(method)) {
             filterChain.doFilter(request, response);
             return;
         }
 
         String authHeader = request.getHeader("Authorization");
+        System.out.println(authHeader);
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             response.sendError(HttpStatus.FORBIDDEN.value(), "No token provided.");
@@ -54,11 +56,15 @@ public class AdminAuthenticationFilter extends OncePerRequestFilter {
 
 
         String token = authHeader.substring(7);
+        System.out.println(token);
 
         try {
             Claims claims = JwtUtils.decodeToken(token);
             String email = claims.getSubject();
             String role = claims.get("role", String.class);
+            System.out.println(email);
+
+            System.out.println("role" + role);
 
             GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role.toUpperCase());
             Authentication auth = new UsernamePasswordAuthenticationToken(
@@ -69,6 +75,7 @@ public class AdminAuthenticationFilter extends OncePerRequestFilter {
 
             // Only allow admins
             if (!"admin".equalsIgnoreCase(role)) {
+
                 response.sendError(HttpStatus.FORBIDDEN.value(), "Access denied. Admins only.");
                 return;
             }
